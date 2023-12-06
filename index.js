@@ -4,12 +4,16 @@ const cors = require('cors');
 const routerApi = require('./routes');
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 //Allow to receive json information
 app.use(express.json());
 
-const whitelist = ['http://localhost:8080', 'http://localhost:3000'];
+const whitelist = [
+  'http://localhost:8080',
+  'http://localhost:3000',
+  'https://xpand-service-storage.onrender.com/',
+];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
