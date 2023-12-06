@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: storage-xpand
+    buildCommand: npm run build  # Replace with your build command
+    startCommand: npm run start  # Replace with your start command
