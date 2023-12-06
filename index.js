@@ -12,7 +12,7 @@ app.use(express.json());
 const whitelist = [
   'http://localhost:8080',
   'http://localhost:3000',
-  'https://xpand-service-storage.onrender.com/',
+  'https://xpand-service-storage.onrender.com',
 ];
 const options = {
   origin: (origin, callback) => {
