@@ -3,8 +3,14 @@ const cors = require('cors');
 //The program search the index automatically
 const routerApi = require('./routes');
 
+const {
+  logErrors,
+  errorHandler,
+  boomErrorHandler,
+} = require('./middlewares/errorHandler');
+
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 //Allow to receive json information
 app.use(express.json());
@@ -27,6 +33,10 @@ const options = {
 app.use(cors(options));
 
 routerApi(app);
+//Middlewares are used after router
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.send('Hello my server express');
