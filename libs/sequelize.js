@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const { config } = require('../config/config');
+const setupModels = require('../db/models');
 
 //Encode uri is to protect our keys
 const USER = encodeURIComponent(config.dbUser);
@@ -13,5 +14,9 @@ const sequelize = new Sequelize(URI, {
   dialect: 'postgres',
   logging: true,
 });
+
+setupModels(sequelize); //He understand the model
+
+sequelize.sync(); // Sync the information and create the table
 
 module.exports = sequelize;
