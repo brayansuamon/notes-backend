@@ -1,12 +1,16 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
-const getConnection = require('../libs//postgres');
+// const getConnection = require('../libs//postgres');
+const pool = require('../libs/postgresPool');
 
 class notesService {
   constructor() {
     this.notes = [];
     this.generate();
+    //Bring the connection with pool
+    this.pool = pool;
+    this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -42,9 +46,16 @@ class notesService {
   }
 
   async find() {
-    const client = await getConnection();
-    const rta = await client.query('SELECT * FROM tasks');
+    //Pool Connection
+    const query = 'SELECT * FROM task';
+    const rta = await this.pool.query(query);
     return rta.rows;
+    //Normal connection
+    // const client = await getConnection();
+    // const rta = await client.query('SELECT * FROM task');
+    // return rta.rows;
+    // -----------------------------------------
+    //Without connect to the server
     // return new Promise((resolve) => {
     //   setTimeout(() => {
     //     resolve(this.notes);

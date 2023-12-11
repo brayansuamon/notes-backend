@@ -11,9 +11,13 @@ const router = express.Router();
 const service = new notesService();
 
 //This if  for notes, the complete path is inside index
-router.get('/', async (req, res) => {
-  const notes = await service.find();
-  res.json(notes);
+router.get('/', async (req, res, next) => {
+  try {
+    const notes = await service.find();
+    res.json(notes);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get(
