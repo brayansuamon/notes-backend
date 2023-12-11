@@ -2,15 +2,16 @@ const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
 // const getConnection = require('../libs//postgres');
-const pool = require('../libs/postgresPool');
+// const pool = require('../libs/postgresPool');
+const sequelize = require('../libs/sequelize');
 
 class notesService {
   constructor() {
     this.notes = [];
     this.generate();
     //Bring the connection with pool
-    this.pool = pool;
-    this.pool.on('error', (err) => console.error(err));
+    // this.pool = pool;
+    // this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -46,13 +47,18 @@ class notesService {
   }
 
   async find() {
-    //Pool Connection
     const query = 'SELECT * FROM task';
-    const rta = await this.pool.query(query);
-    return rta.rows;
+    //Sequelize connection
+    const [data] = await sequelize.query(query);
+    return data;
+    // ----------------------------------------
+    //Pool Connection
+    // const rta = await this.pool.query(query);
+    // return rta.rows;
+    // -----------------------------------------
     //Normal connection
     // const client = await getConnection();
-    // const rta = await client.query('SELECT * FROM task');
+    // const rta = await client.query(query);
     // return rta.rows;
     // -----------------------------------------
     //Without connect to the server
