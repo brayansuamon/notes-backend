@@ -7,6 +7,7 @@ const {
   logErrors,
   errorHandler,
   boomErrorHandler,
+  ormErrorHandler,
 } = require('./middlewares/errorHandler');
 
 const app = express();
@@ -33,8 +34,9 @@ const options = {
 app.use(cors(options));
 
 routerApi(app);
-//Middlewares are used after router
+//Middlewares are used after router, these executes according  to the order
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
