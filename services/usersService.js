@@ -1,5 +1,5 @@
-const { faker } = require('@faker-js/faker');
 const { models } = require('../libs/sequelize');
+const boom = require('@hapi/boom');
 
 class usersService {
   constructor() {
@@ -7,12 +7,7 @@ class usersService {
   }
 
   async create(data) {
-    const newUser = {
-      ...data,
-      userId: faker.string.uuid(),
-      isBlock: faker.datatype.boolean(),
-    };
-    this.users.push(newUser);
+    const newUser = await models.User.create(data);
     return newUser;
   }
 
@@ -21,14 +16,27 @@ class usersService {
     return rta;
   }
 
-  async findOne(id) {
-    const rta = await models.User.findOne({ id });
+  async findOne(userId) {
+    const user = await models.User.findByPk(userId);
+    if (!user) {
+      throw boom.notFound('User not found');
+    }
+    return user;
+  }
+
+  async update(userId, changes) {
+    // const user = await models.User.findByPk(userId);
+    // To reuse code this.findOne(userId)
+    const user = await this.findOne(userId);
+    const rta = await user.update(changes);
     return rta;
   }
 
-  async update(id, changes) {}
-
-  async delete(id) {}
+  async delete(userId) {
+    const user = await this.findOne(userId);
+    await user.destroy();
+    return { userId };
+  }
 }
 
 module.exports = usersService;

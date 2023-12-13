@@ -70,10 +70,14 @@ router.patch(
 );
 
 //Allow us to remove a note
-router.delete('/:noteId', async (req, res) => {
-  const { noteId } = req.params;
-  const deleteNote = await service.delete(noteId);
-  res.json(deleteNote);
-});
+router.delete(
+  '/:noteId',
+  validatorHandler(getNotesSchema, 'params'),
+  async (req, res) => {
+    const { noteId } = req.params;
+    const deleteNote = await service.delete(noteId);
+    res.json(deleteNote);
+  },
+);
 
 module.exports = router;
