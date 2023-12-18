@@ -7,11 +7,11 @@ const setupModels = require('../db/models');
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
 //In the URI we paste the url of connection from AWS or Heroku || https://node-postgres.com/features/connecting
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+const URI = `mysql://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
 
 //Sequelize has incorporated pool function
 const sequelize = new Sequelize(URI, {
-  dialect: 'postgres',
+  dialect: 'mysql',
   logging: true,
 });
 
