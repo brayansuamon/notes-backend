@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:status": "sequelize-cli db:migrate:status",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:undo",
+    "migrations:delete": "sequelize-cli db:undo:all"
   },
   "keywords": [],
   "author": "",
