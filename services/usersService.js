@@ -16,26 +16,26 @@ class usersService {
     return rta;
   }
 
-  async findOne(userId) {
-    const user = await models.User.findByPk(userId);
+  async findOne(id) {
+    const user = await models.User.findByPk(id);
     if (!user) {
       throw boom.notFound('User not found');
     }
     return user;
   }
 
-  async update(userId, changes) {
-    // const user = await models.User.findByPk(userId);
-    // To reuse code this.findOne(userId)
-    const user = await this.findOne(userId);
+  async update(id, changes) {
+    // const user = await models.User.findByPk(id);
+    // To reuse code this.findOne(id)
+    const user = await this.findOne(id);
     const rta = await user.update(changes);
     return rta;
   }
 
-  async delete(userId) {
-    const user = await this.findOne(userId);
+  async delete(id) {
+    const user = await this.findOne(id);
     await user.destroy();
-    return { userId };
+    return { id };
   }
 }
 

@@ -8,6 +8,9 @@ function setupModels(sequelize) {
   //Init create a namespace named 'models' to access to it. Name is in user.model --> config --> user
   User.init(UserSchema, User.config(sequelize));
   Customer.init(CustomerSchema, Customer.config(sequelize));
+
+  //Here we execute the associations between models for relational databases
+  Customer.associate(sequelize.models);
 }
 
 module.exports = setupModels;

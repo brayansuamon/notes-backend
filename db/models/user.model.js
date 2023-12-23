@@ -4,7 +4,7 @@ const USER_TABLE = 'users';
 
 //For DB information use _ and not Camel Case as a convention
 const UserSchema = {
-  userId: {
+  id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,

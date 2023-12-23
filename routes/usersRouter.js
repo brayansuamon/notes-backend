@@ -21,12 +21,12 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get(
-  '/:userId',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
-      const { userId } = req.params;
-      const user = await service.findOne(userId);
+      const { id } = req.params;
+      const user = await service.findOne(id);
       res.json(user);
     } catch (error) {
       next(error);
@@ -49,14 +49,14 @@ router.post(
 );
 
 router.patch(
-  '/:userId',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
     try {
-      const { userId } = req.params;
+      const { id } = req.params;
       const body = req.body;
-      const newData = await service.update(userId, body);
+      const newData = await service.update(id, body);
       res.json(newData);
     } catch (error) {
       next(error);
@@ -65,12 +65,12 @@ router.patch(
 );
 
 router.delete(
-  '/:userId',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
-      const { userId } = req.params;
-      const userDeleted = await service.delete(userId);
+      const { id } = req.params;
+      const userDeleted = await service.delete(id);
       res.json(userDeleted);
     } catch (error) {
       next(error);

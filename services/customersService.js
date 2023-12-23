@@ -14,26 +14,26 @@ class customersService {
     return rta;
   }
 
-  async findOne(userId) {
-    const user = await models.Customer.findByPk(userId);
-    if (!user) {
+  async findOne(id) {
+    const customer = await models.Customer.findByPk(id);
+    if (!customer) {
       throw boom.notFound('User not found');
     }
-    return user;
+    return customer;
   }
 
-  async update(userId, changes) {
-    // const user = await models.User.findByPk(userId);
-    // To reuse code this.findOne(userId)
-    const customer = await this.findOne(userId);
+  async update(id, changes) {
+    // const user = await models.User.findByPk(id);
+    // To reuse code this.findOne(id)
+    const customer = await this.findOne(id);
     const rta = await customer.update(changes);
     return rta;
   }
 
-  async delete(userId) {
-    const customer = await this.findOne(userId);
+  async delete(id) {
+    const customer = await this.findOne(id);
     await customer.destroy();
-    return { userId };
+    return { id };
   }
 }
 
