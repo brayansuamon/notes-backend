@@ -34,8 +34,9 @@ const UserSchema = {
 
 class User extends Model {
   //This model allow us to extend as find
-  static associate() {
+  static associate(models) {
     //associate
+    this.hasOne(models.Customer, { as: 'customer', foreignKey: 'userId' });
   }
 
   static config(sequelize) {

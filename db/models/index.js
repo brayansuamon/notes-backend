@@ -11,6 +11,7 @@ function setupModels(sequelize) {
 
   //Here we execute the associations between models for relational databases
   Customer.associate(sequelize.models);
+  User.associate(sequelize.models);
 }
 
 module.exports = setupModels;
