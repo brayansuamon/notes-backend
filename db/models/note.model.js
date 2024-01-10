@@ -2,7 +2,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const NOTE_TABLE = 'notes';
 
-const noteSchema = {
+const NoteSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -49,4 +49,4 @@ class Note extends Model {
   }
 }
 
-module.exports = { NOTE_TABLE, noteSchema, Note };
+module.exports = { NOTE_TABLE, NoteSchema, Note };

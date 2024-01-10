@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { CUSTOMER_TABLE } = require('./customer.model');
 
-const COMMENT_TABLE = 'notes';
+const COMMENT_TABLE = 'comments';
 
 const CommentSchema = {
   id: {
@@ -19,6 +19,10 @@ const CommentSchema = {
       key: 'id',
     },
   },
+  description: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
   createdAt: {
     field: 'created_at',
     type: DataTypes.DATE,
@@ -33,6 +37,15 @@ class Comment extends Model {
     //as is the alias for the association
     this.belongsTo(models.Customer, {
       as: 'customer',
+    });
+    //The comment can have many notes
+    this.belongsToMany(models.Note, {
+      as: 'items',
+      //With the table of comment note to do the relation
+      through: models.CommentNote,
+      //Key of the table which I am solving the relation
+      foreignKey: 'commentId',
+      otherKey: 'noteId',
     });
   }
 
