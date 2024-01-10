@@ -1,10 +1,10 @@
 //Schema are for validate data that comes from the frontend
 const Joi = require('joi');
 
-const noteId = Joi.string().uuid();
+const id = Joi.string();
 const name = Joi.string().alphanum().min(3).max(20);
 const description = Joi.string().alphanum().min(3).max(100);
-const date = Joi.string().isoDate();
+const date = Joi.string();
 const state = Joi.string();
 const isBlock = Joi.boolean();
 
@@ -23,7 +23,7 @@ const updateNotesSchema = Joi.object({
 });
 
 const getNotesSchema = Joi.object({
-  noteId: noteId.required(),
+  id: id.required(),
 });
 
 module.exports = { createNotesSchema, updateNotesSchema, getNotesSchema };

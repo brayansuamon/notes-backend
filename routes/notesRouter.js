@@ -21,16 +21,16 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get(
-  '/:noteId',
+  '/:id',
   //Middleware to validate data, use getNoteSchema to get id
   validatorHandler(getNotesSchema, 'params'),
   //Middleware to connect to the service
   async (req, res, next) => {
     try {
-      // const id = req.params.noteId;
+      // const id = req.params.id;
       //Only get the id of the params
-      const { noteId } = req.params;
-      const note = await service.findOne(noteId);
+      const { id } = req.params;
+      const note = await service.findOne(id);
       res.json(note);
     } catch (error) {
       //To catch the middleware error
@@ -52,16 +52,16 @@ router.post(
 
 //Allow us to update partial field of the note
 router.patch(
-  '/:noteId',
+  '/:id',
   //First validate Id and then continue with the content
   validatorHandler(getNotesSchema, 'params'),
   validatorHandler(updateNotesSchema, 'body'),
   async (req, res, next) => {
     try {
       //All parameters of notes comes as string
-      const { noteId } = req.params;
+      const { id } = req.params;
       const body = req.body;
-      const updateNote = await service.update(noteId, body);
+      const updateNote = await service.update(id, body);
       res.json(updateNote);
     } catch (error) {
       next(error);
@@ -71,11 +71,11 @@ router.patch(
 
 //Allow us to remove a note
 router.delete(
-  '/:noteId',
+  '/:id',
   validatorHandler(getNotesSchema, 'params'),
   async (req, res) => {
-    const { noteId } = req.params;
-    const deleteNote = await service.delete(noteId);
+    const { id } = req.params;
+    const deleteNote = await service.delete(id);
     res.json(deleteNote);
   },
 );

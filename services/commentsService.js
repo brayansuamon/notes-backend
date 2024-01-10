@@ -9,6 +9,11 @@ class commentsService {
     return newComment;
   }
 
+  async addItem(data) {
+    const newItem = await models.CommentNote.create(data);
+    return newItem;
+  }
+
   async find() {
     const rta = await models.Comment.findAll({
       include: ['customer'],
@@ -24,6 +29,7 @@ class commentsService {
           //Bring the user from the customer
           include: ['user'],
         },
+        'items',
       ],
     });
     if (!comment) {

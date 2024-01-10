@@ -45,7 +45,7 @@ class Comment extends Model {
       through: models.CommentNote,
       //Key of the table which I am solving the relation
       foreignKey: 'commentId',
-      otherKey: 'noteId',
+      otherKey: 'id',
     });
   }
 

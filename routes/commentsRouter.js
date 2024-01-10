@@ -4,6 +4,7 @@ const validatorHandler = require('../middlewares/validatorHandler');
 const {
   getCommentSchema,
   createCommentSchema,
+  addItemSchema,
 } = require('../schemas/commentSchema');
 
 const router = express.Router();
@@ -29,8 +30,22 @@ router.post(
   async (req, res, next) => {
     try {
       const body = req.body;
-      const newComment = await service.create(body);
+      const newComment = await service.addItem(body);
       res.json(newComment);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+router.post(
+  '/add-item',
+  validatorHandler(addItemSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newItem = await service.create(body);
+      res.json(newItem);
     } catch (error) {
       next(error);
     }

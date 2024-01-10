@@ -30,6 +30,7 @@ const NoteSchema = {
     field: 'is_block',
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
 };
 

@@ -1,7 +1,6 @@
-const { faker } = require('@faker-js/faker');
+const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
 // const { models } = require('./../libs/sequelize');
-const sequelize = require('./../libs/sequelize');
 
 // const getConnection = require('../libs//postgres');
 // const pool = require('../libs/postgresPool');
@@ -9,54 +8,25 @@ const sequelize = require('./../libs/sequelize');
 
 class notesService {
   constructor() {
-    this.notes = [];
-    this.generate();
     //Bring the connection with pool
     // this.pool = pool;
     // this.pool.on('error', (err) => console.error(err));
   }
 
-  generate() {
-    //Generate notes
-    this.notes.push(
-      {
-        name: 'Note 1',
-        description: 'Hello 2',
-        date: '20/05/2023',
-        state: 'pending',
-        noteId: faker.string.uuid(),
-        isBlock: faker.datatype.boolean(),
-      },
-      {
-        name: 'Note 2',
-        description: 'Hello',
-        date: '13/10/2023',
-        state: 'completed',
-        noteId: faker.string.uuid(),
-        isBlock: faker.datatype.boolean(),
-      },
-    );
-  }
-
   async create(data) {
-    const newNote = {
-      noteId: faker.string.uuid(),
-      ...data,
-      isBlock: faker.datatype.boolean(),
-    };
-    this.notes.push(newNote);
+    const newNote = await models.Note.create(data);
     return newNote;
   }
 
   async find() {
-    // const rta = await models.User.findAll();
-    // return rta;
+    const rta = await models.Note.findAll();
+    return rta;
     // --------------------------------------
     //Solutions with query
-    const query = 'SELECT * FROM notes';
+    // const query = 'SELECT * FROM notes';
     //Sequelize connection
-    const [data] = await sequelize.query(query);
-    return data;
+    // const [data] = await sequelize.query(query);
+    // return data;
     // ----------------------------------------
     //Pool Connection
     // const rta = await this.pool.query(query);
@@ -78,7 +48,7 @@ class notesService {
   async findOne(id) {
     // const name = this.getTotal(); --> Middleware error
 
-    const note = this.notes.find((note) => note.noteId === id);
+    const note = await models.Note.findByPk(id);
     if (!note) {
       throw boom.notFound('Note not found');
     }
@@ -89,22 +59,14 @@ class notesService {
   }
 
   async update(id, changes) {
-    const index = this.notes.findIndex((note) => note.noteId === id);
-    if (index === -1) {
-      //Boom send the number of error
-      throw boom.notFound('Note not found');
-    }
-    const note = this.notes[index];
-    this.notes[index] = { ...note, ...changes };
-    return this.notes[index];
+    const note = await this.findOne(id);
+    const rta = await note.update(changes);
+    return rta;
   }
 
   async delete(id) {
-    const index = this.notes.findIndex((note) => note.noteId === id);
-    if (index === -1) {
-      throw new Error('Note not found');
-    }
-    this.notes.splice(index, 1);
+    const note = await this.findOne(id);
+    await note.destroy();
     return { id };
   }
 }
