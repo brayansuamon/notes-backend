@@ -48,6 +48,7 @@ class Customer extends Model {
     //Here we add the relations with users
     //as is the alias for the association
     this.belongsTo(models.User, { as: 'user' });
+    this.hasMany(models.Comment, { as: 'comment', foreignKey: 'customerId' });
   }
 
   static config(sequelize) {

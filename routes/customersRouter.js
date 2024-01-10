@@ -20,7 +20,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get(
-  '/id',
+  '/:id',
   validatorHandler(getCustomerSchema, 'params'),
   async (req, res, next) => {
     try {
@@ -48,7 +48,7 @@ router.post(
 );
 
 router.patch(
-  '/id',
+  '/:id',
   validatorHandler(getCustomerSchema, 'params'),
   validatorHandler(updateCustomerSchema, 'body'),
   async (req, res, next) => {
@@ -64,7 +64,7 @@ router.patch(
 );
 
 router.delete(
-  '/id',
+  '/:id',
   validatorHandler(getCustomerSchema, 'params'),
   async (req, res, next) => {
     try {

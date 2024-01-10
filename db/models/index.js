@@ -1,6 +1,7 @@
 //Allow to send connections to the models
 const { User, UserSchema } = require('./user.model');
 const { Customer, CustomerSchema } = require('./customer.model');
+const { Comment, CommentSchema } = require('./comment.model');
 
 //He read the UserSchema to understand how to create the table
 function setupModels(sequelize) {
@@ -8,10 +9,12 @@ function setupModels(sequelize) {
   //Init create a namespace named 'models' to access to it. Name is in user.model --> config --> user
   User.init(UserSchema, User.config(sequelize));
   Customer.init(CustomerSchema, Customer.config(sequelize));
+  Comment.init(CommentSchema, Comment.config(sequelize));
 
   //Here we execute the associations between models for relational databases
   Customer.associate(sequelize.models);
   User.associate(sequelize.models);
+  Comment.associate(sequelize.models);
 }
 
 module.exports = setupModels;
