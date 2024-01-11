@@ -17,6 +17,10 @@ const CommentNoteSchema = {
     allowNull: false,
     defaultValue: Sequelize.NOW,
   },
+  amount: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
   commentId: {
     field: 'comment_id',
     allowNull: false,

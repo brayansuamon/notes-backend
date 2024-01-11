@@ -16,7 +16,13 @@ class commentsService {
 
   async find() {
     const rta = await models.Comment.findAll({
-      include: ['customer'],
+      include: [
+        {
+          association: 'customer',
+          include: 'user',
+        },
+        'items',
+      ],
     });
     return rta;
   }

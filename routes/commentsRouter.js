@@ -10,6 +10,15 @@ const {
 const router = express.Router();
 const service = new commentsService();
 
+router.get('/', async (req, res, next) => {
+  try {
+    const comment = await service.find();
+    res.json(comment);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get(
   '/:id',
   validatorHandler(getCommentSchema, 'params'),
@@ -30,7 +39,7 @@ router.post(
   async (req, res, next) => {
     try {
       const body = req.body;
-      const newComment = await service.addItem(body);
+      const newComment = await service.create(body);
       res.json(newComment);
     } catch (error) {
       next(error);
@@ -44,7 +53,7 @@ router.post(
   async (req, res, next) => {
     try {
       const body = req.body;
-      const newItem = await service.create(body);
+      const newItem = await service.addItem(body);
       res.json(newItem);
     } catch (error) {
       next(error);

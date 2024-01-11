@@ -29,6 +29,19 @@ const CommentSchema = {
     allowNull: false,
     defaultValue: Sequelize.NOW,
   },
+  total: {
+    //To specify that this field is outside the table
+    type: DataTypes.VIRTUAL,
+    get() {
+      //Items is called below in the association
+      if (this.items.length > 0) {
+        return this.items.reduce((total, item) => {
+          return total + item.CommentNote.amount;
+        }, 0); // 0 to init in this value
+      }
+      return 0;
+    },
+  },
 };
 
 class Comment extends Model {
@@ -45,7 +58,7 @@ class Comment extends Model {
       through: models.CommentNote,
       //Key of the table which I am solving the relation
       foreignKey: 'commentId',
-      otherKey: 'id',
+      otherKey: 'noteId',
     });
   }
 
