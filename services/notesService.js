@@ -1,4 +1,5 @@
 const { models } = require('../libs/sequelize');
+const { Op } = require('sequelize');
 const boom = require('@hapi/boom');
 // const { models } = require('./../libs/sequelize');
 
@@ -18,8 +19,32 @@ class notesService {
     return newNote;
   }
 
-  async find() {
-    const rta = await models.Note.findAll();
+  async find(query) {
+    const options = {
+      //include : ['category']
+      //Where is to search by a condition
+      where: {},
+    };
+
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+
+    const { state } = query;
+    if (state) {
+      options.where.state = state;
+    }
+
+    const { id_min, id_max } = query;
+    if (id_min && id_max) {
+      options.where.id = {
+        [Op.between]: [id_min, id_max],
+      };
+    }
+
+    const rta = await models.Note.findAll(options);
     return rta;
     // --------------------------------------
     //Solutions with query

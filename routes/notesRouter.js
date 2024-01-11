@@ -5,20 +5,26 @@ const {
   getNotesSchema,
   createNotesSchema,
   updateNotesSchema,
+  queryNotesSchema,
 } = require('../schemas/noteSchema');
 
 const router = express.Router();
 const service = new notesService();
 
 //This if  for notes, the complete path is inside index
-router.get('/', async (req, res, next) => {
-  try {
-    const notes = await service.find();
-    res.json(notes);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get(
+  '/',
+  //Validate the pagination in the query parameters
+  validatorHandler(queryNotesSchema, 'query'),
+  async (req, res, next) => {
+    try {
+      const notes = await service.find(req.query); //Send all parameters that comes from query
+      res.json(notes);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 router.get(
   '/:id',
