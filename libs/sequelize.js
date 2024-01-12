@@ -17,6 +17,6 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize); //He understand the model
 
-sequelize.sync(); // Sync the information and create the table || NOT in PROD
+// sequelize.sync(); // Sync the information and create the table || NOT in PROD
 
 module.exports = sequelize;
