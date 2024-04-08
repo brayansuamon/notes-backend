@@ -9,6 +9,7 @@ const {
   boomErrorHandler,
   ormErrorHandler,
 } = require('./middlewares/errorHandler');
+const checkApiKey = require('./middlewares/authHandler');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -40,7 +41,7 @@ app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
-app.get('/', (req, res) => {
+app.get('/', checkApiKey, (req, res) => {
   res.send('Hello my server express');
 });
 
