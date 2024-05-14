@@ -1,5 +1,6 @@
 const { models } = require('../libs/sequelize');
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 class usersService {
   constructor() {
@@ -7,7 +8,13 @@ class usersService {
   }
 
   async create(data) {
-    const newUser = await models.User.create(data);
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await models.User.create({
+      ...data,
+      password: hash,
+    });
+    //To not return the password, datavalues is deserialize for sequelize
+    delete newUser.dataValues.password;
     return newUser;
   }
 
