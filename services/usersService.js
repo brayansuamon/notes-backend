@@ -24,6 +24,13 @@ class usersService {
     });
     return rta;
   }
+  async findByEmail(email) {
+    const rta = await models.User.findOne({
+      //Bring the first user that match the email
+      where: { email },
+    });
+    return rta;
+  }
 
   async findOne(id) {
     const user = await models.User.findByPk(id);

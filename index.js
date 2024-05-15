@@ -34,6 +34,8 @@ const options = {
 //Allow all domains with cors()
 app.use(cors(options));
 
+require('./utils/auth');
+
 routerApi(app);
 //Middlewares are used after router, these executes according  to the order
 app.use(logErrors);
