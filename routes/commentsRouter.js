@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const commentsService = require('../services/commentsService');
 const validatorHandler = require('../middlewares/validatorHandler');
 const {
@@ -35,6 +36,8 @@ router.get(
 
 router.post(
   '/',
+  //To identify the user
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createCommentSchema, 'body'),
   async (req, res, next) => {
     try {
