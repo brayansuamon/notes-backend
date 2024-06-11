@@ -2,6 +2,8 @@ const express = require('express');
 const passport = require('passport');
 const commentsService = require('../services/commentsService');
 const validatorHandler = require('../middlewares/validatorHandler');
+const { checkRoles } = require('../middlewares/authHandler');
+
 const {
   getCommentSchema,
   createCommentSchema,
@@ -11,14 +13,18 @@ const {
 const router = express.Router();
 const service = new commentsService();
 
-router.get('/', async (req, res, next) => {
-  try {
-    const comment = await service.find();
-    res.json(comment);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get(
+  '/', //To identify the user
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const comment = await service.find();
+      res.json(comment);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 router.get(
   '/:id',
@@ -38,6 +44,7 @@ router.post(
   '/',
   //To identify the user
   passport.authenticate('jwt', { session: false }),
+  checkRoles('customer', 'admin'),
   validatorHandler(createCommentSchema, 'body'),
   async (req, res, next) => {
     try {

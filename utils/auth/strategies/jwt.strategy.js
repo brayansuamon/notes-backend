@@ -7,6 +7,7 @@ const options = {
   secretOrKey: config.jwtSecret,
 };
 const JwtStrategy = new Strategy(options, (payload, done) =>
+  //This allow to have the info of the user available in req.user
   done(null, payload),
 );
 
