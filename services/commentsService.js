@@ -14,6 +14,22 @@ class commentsService {
     return newItem;
   }
 
+  async findByUser(userId) {
+    const comments = await models.Comment.findAll({
+      //Bring the id from user with association
+      where: {
+        '$customer.user.id$': userId,
+      },
+      include: [
+        {
+          association: 'customer',
+          include: 'user',
+        },
+      ],
+    });
+    return comments;
+  }
+
   async find() {
     const rta = await models.Comment.findAll({
       include: [
