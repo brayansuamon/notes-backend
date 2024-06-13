@@ -1,10 +1,9 @@
-const { config } = require('../config/config');
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
+const AuthService = require('../services/authService');
 
 const router = express.Router();
-const secret = config.jwtSecret;
+const service = new AuthService();
 
 router.post(
   '/login',
@@ -13,22 +12,21 @@ router.post(
   async (req, res, next) => {
     try {
       const user = req.user;
-      const jwtConfig = {
-        expiresIn: '7d',
-      };
-      const payload = {
-        sub: user.id,
-        role: user.role,
-      };
-      const token = jwt.sign(payload, secret, jwtConfig);
-      res.json({
-        user,
-        token,
-      });
+      res.json(service.signToken(user));
     } catch (error) {
       next(error);
     }
   },
 );
+
+router.post('/recovery', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const rta = await service.sendEmail(email);
+    res.json(rta);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
