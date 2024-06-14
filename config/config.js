@@ -14,6 +14,7 @@ const config = {
   jwtSecret: process.env.JWT_SECRET,
   myEmail: process.env.MY_EMAIL,
   myPassword: process.env.MY_PASSWORD,
+  frontUrl: process.env.FRONT_URL,
 };
 
 module.exports = { config };

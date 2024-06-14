@@ -39,11 +39,7 @@ class AuthService {
     };
   }
 
-  async sendEmail(email) {
-    const user = await service.findByEmail(email);
-    if (!user) {
-      throw boom.unauthorized();
-    }
+  async sendEmail(infoMail) {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
@@ -53,15 +49,36 @@ class AuthService {
         pass: config.myPassword,
       },
     });
-    await transporter.sendMail({
-      from: `"Brayan Suarez 👻" <${config.myEmail}>`, // sender address
-      to: `${user.email}`, // list of receivers
-      subject: 'This is my first mail', // Subject line
-      text: 'How are you?', // plain text body
-      html: '<b>How are you?</b>', // html body
-    });
+    await transporter.sendMail(infoMail);
 
     return { message: 'Email sent' };
+  }
+
+  async sendRecovery(email) {
+    const jwtConfig = {
+      expiresIn: '15min',
+    };
+
+    const user = await service.findByEmail(email);
+    if (!user) {
+      throw boom.unauthorized();
+    }
+
+    const payload = { sub: user.id };
+    const token = jwt.sign(payload, secret, jwtConfig);
+    const link = `${config.frontUrl}/recovery?token=${token}`;
+    await service.update(user.id, { recoveryToken: token });
+
+    const mail = {
+      from: `"Brayan Suarez 👻" <${config.myEmail}>`, // sender address
+      to: `${user.email}`, // list of receivers
+      subject: 'Email to recover password', // Subject line
+      // text: 'How are you?', // plain text body
+      html: `<b>Ingresa a este link => ${link} </b>`, // html body
+    };
+
+    const rta = await this.sendEmail(mail);
+    return rta;
   }
 }
 module.exports = AuthService;
