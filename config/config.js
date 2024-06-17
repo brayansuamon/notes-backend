@@ -15,6 +15,7 @@ const config = {
   myEmail: process.env.MY_EMAIL,
   myPassword: process.env.MY_PASSWORD,
   frontUrl: process.env.FRONT_URL,
+  dataBaseUrl: process.env.DATABASE_URL,
 };
 
 module.exports = { config };
